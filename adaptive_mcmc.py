@@ -224,32 +224,3 @@ class AdaptiveOptimalScaling_MH:
         draws = np.stack(self.draws[burn_in:])
         print("optimal p* = 0.234,", f"estimated p*: {round(sum(A) / len(A), 3)}")
         return draws[::thin]
-
-
-if __name__ == "__main__":
-
-    import matplotlib.pyplot as plt
-    from scipy.stats import multivariate_normal
-    from whittlex.plotting_funcs import plot_marginals
-
-    # np.random.seed(51029841)
-
-    dim = 50
-    M = randn(dim, dim)
-
-    cov_mat = M @ M.T
-    np.fill_diagonal(cov_mat, cov_mat.diagonal() * 1.01)
-    # cov_mat /= 50
-    # print(cov_mat)
-
-    plt.imshow(cov_mat)
-    plt.show()
-
-    dist = multivariate_normal(np.zeros(dim), cov=cov_mat)
-    target = lambda x: dist.logpdf(x)
-
-    niter = 10000
-    mcmc = AdaptiveOptimalScaling_MH(target, dim)
-    draws = mcmc.run(niter, burn_in=niter // 2)
-
-    plot_marginals([draws], shape=(5, 10), figsize=(20, 15))

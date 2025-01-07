@@ -194,18 +194,3 @@ class AdaptiveOptimalScaling_MH_1d:
 
         fig.tight_layout()
         plt.show()
-
-
-if __name__ == "__main__":
-
-    from scipy.stats import gamma
-
-    xgrid = np.linspace(-1, 8, 100)
-    dist = gamma(a=2, scale=1)  # target distribution
-    target = lambda x: dist.logpdf(x)[0]
-
-    niter = 10000
-    mcmc = AdaptiveOptimalScaling_MH_1d(target)
-    draws = mcmc.run(niter, burn_in=niter // 2)
-    # draws = mcmc.run(niter, burn_in = 0)
-    mcmc.plot_results(draws, xgrid)
