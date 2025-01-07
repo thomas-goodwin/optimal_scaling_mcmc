@@ -82,7 +82,7 @@ class AdaptiveOptimalScaling_MH:
         self._n0 = round(5 / (self.pstar * (1 - self.pstar)))
 
         if x0 is None:
-            x0 = np.ones(dim)  # TODO: change this
+            x0 = np.ones(dim)
 
         # running mean and covariance
         self.x_bar = x0.copy()
@@ -91,9 +91,8 @@ class AdaptiveOptimalScaling_MH:
         # saving chain and theta
         self.draws = [x0]
         self.thetas = [
-            np.log(sigma0)
-        ]  # log scaling constant for RW-MH, i.e. theta = ln(sigma)
-        # TODO: make starting thetas0 in arguments!!
+            np.log(sigma0)  # log scaling constant for RW-MH, i.e. theta = ln(sigma)
+        ]
 
     @property
     def n0(self):
@@ -145,7 +144,7 @@ class AdaptiveOptimalScaling_MH:
         num_big = 0
         num_small = 0
 
-        A = []
+        A = []  # keeping track of acceptance rates
         # Sigmas = []
 
         i = 0
@@ -221,6 +220,6 @@ class AdaptiveOptimalScaling_MH:
 
             i += 1
 
-        draws = np.stack(self.draws[burn_in:])
+        draws = np.stack(self.draws[-niter + burn_in :])
         print("optimal p* = 0.234,", f"estimated p*: {round(sum(A) / len(A), 3)}")
         return draws[::thin]

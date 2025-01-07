@@ -64,8 +64,8 @@ class AdaptiveOptimalScaling_MH_1d:
         # saving chain and theta
         self.draws = [x0]
         self.thetas = [
-            np.log(1)
-        ]  # log scaling constant for RW-MH, i.e. theta = ln(sigma)
+            np.log(1)  # log scaling constant for RW-MH, i.e. theta = ln(sigma)
+        ]
 
     @property
     def n0(self):
@@ -99,7 +99,7 @@ class AdaptiveOptimalScaling_MH_1d:
         num_big = 0
         num_small = 0
 
-        A = []
+        A = []  # keeping track of acceptance rates
 
         i = 0
         num_iter = 0
@@ -158,7 +158,7 @@ class AdaptiveOptimalScaling_MH_1d:
 
             i += 1
 
-        draws = np.stack(self.draws[burn_in:])
+        draws = np.stack(self.draws[-niter + burn_in :])
         print("optimal p* = 0.44,", f"estimated p*: {round(sum(A) / len(A), 3)}")
         return draws[::thin]
 
